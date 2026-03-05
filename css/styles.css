@@ -1,0 +1,1104 @@
+/* ============================================
+   SIRENA MARINA ART — Sitio Web
+   Estética de museo contemporáneo
+   Mobile-first, editorial, contemplativo
+   ============================================ */
+
+/* ---------- RESET & BASE ---------- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Fondos */
+  --bg-gallery: #DDDAD1;
+  --bg-lavanda: #E7E7F6;
+  --bg-vino: #360F25;
+  --bg-magenta: #8F3162;
+
+  /* Tipográficos */
+  --color-dorado: #D09048;
+  --color-naranja: #B84018;
+  --color-magenta-text: #903060;
+  --color-magenta-alt: #883060;
+  --color-dorado-claro: #A88060;
+  --color-malva: #885070;
+  --color-lavanda-title: #B888D8;
+
+  /* Neutros */
+  --color-blanco: #F5F4F0;
+  --color-negro: #1A1A1A;
+  --color-gris: #6B6560;
+
+  /* Tipografía */
+  --font-heading: 'Inter', 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+  --font-body: 'Inter', 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 6rem;
+  --space-2xl: 8rem;
+
+  /* Layout */
+  --max-width: 1200px;
+  --margin-page: clamp(1.5rem, 5vw, 6rem);
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-gallery);
+  color: var(--color-magenta-text);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---------- TYPOGRAPHY ---------- */
+.heading-xl {
+  font-family: var(--font-heading);
+  font-weight: 300;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.heading-lg {
+  font-family: var(--font-heading);
+  font-weight: 300;
+  font-size: clamp(1.8rem, 4vw, 3.5rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.heading-md {
+  font-family: var(--font-heading);
+  font-weight: 300;
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+.heading-sm {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.body-text {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  line-height: 1.8;
+}
+
+.caption-text {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  line-height: 1.6;
+}
+
+/* ---------- LAYOUT UTILITIES ---------- */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--margin-page);
+}
+
+.section {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-xl) 0;
+  position: relative;
+}
+
+.section--auto {
+  min-height: auto;
+}
+
+/* ---------- FADE-IN ANIMATION ---------- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- SVG FIRMA (Draw on Scroll) ---------- */
+.svg-firma {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.18;
+  transition: opacity 0.3s ease;
+}
+
+.svg-firma svg {
+  width: 92vw;
+  height: auto;
+  max-width: 1400px;
+}
+
+.firma-stroke {
+  stroke-dasharray: var(--path-length, 2000);
+  stroke-dashoffset: var(--path-length, 2000);
+  will-change: stroke-dashoffset;
+}
+
+.firma-dot {
+  transition: opacity 0.6s ease;
+}
+
+/* ---------- PLACEHOLDER IMAGE ---------- */
+.placeholder-img {
+  background: linear-gradient(135deg, #C8C4BB 0%, #B8B4AB 50%, #C8C4BB 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gris);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+
+.placeholder-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.placeholder-img span {
+  text-align: center;
+  padding: 1rem;
+  opacity: 0.5;
+}
+
+/* ============================================
+   HOME — HERO
+   ============================================ */
+.hero {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg-gallery);
+  display: flex;
+  align-items: center;
+  padding: var(--space-lg) 0;
+  position: relative;
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  align-items: center;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--margin-page);
+}
+
+.hero__portrait {
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 3/4;
+  margin: 0 auto;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.hero__content {
+  text-align: center;
+}
+
+.hero__title {
+  margin-bottom: var(--space-xs);
+}
+
+.hero__logo {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+}
+
+.hero__subtitle {
+  color: var(--color-gris);
+  font-weight: 300;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+.hero__statement {
+  color: var(--color-magenta-text);
+  max-width: 480px;
+  margin: 0 auto var(--space-md);
+  font-style: italic;
+  font-weight: 300;
+}
+
+.hero__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+/* ---------- BUTTONS ---------- */
+.btn {
+  display: inline-block;
+  padding: 0.9rem 2.5rem;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.btn--primary {
+  background: var(--color-magenta-text);
+  color: var(--color-blanco);
+}
+
+.btn--primary:hover {
+  background: var(--bg-magenta);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--color-magenta-text);
+  border: 1px solid var(--color-magenta-text);
+}
+
+.btn--ghost:hover {
+  background: var(--color-magenta-text);
+  color: var(--color-blanco);
+}
+
+.btn--gold {
+  background: transparent;
+  color: var(--color-dorado-claro);
+  border: 1px solid var(--color-dorado-claro);
+}
+
+.btn--gold:hover {
+  background: var(--color-dorado-claro);
+  color: var(--bg-magenta);
+}
+
+.btn--large {
+  padding: 1.1rem 3rem;
+  font-size: 0.8rem;
+}
+
+/* ============================================
+   HOME — SEMBLANZA
+   ============================================ */
+.semblanza {
+  background: var(--bg-gallery);
+  padding: var(--space-xl) 0;
+}
+
+.semblanza__inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 var(--margin-page);
+  text-align: center;
+}
+
+.semblanza__title {
+  color: var(--color-magenta-text);
+  margin-bottom: var(--space-md);
+}
+
+.semblanza__text {
+  color: var(--color-magenta-alt);
+  margin-bottom: var(--space-sm);
+}
+
+.semblanza__more {
+  display: none;
+  margin-top: var(--space-sm);
+}
+
+.semblanza__more.active {
+  display: block;
+}
+
+.semblanza__toggle {
+  background: none;
+  border: none;
+  color: var(--color-dorado);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: var(--space-sm);
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.semblanza__toggle:hover {
+  color: var(--color-naranja);
+}
+
+/* ============================================
+   HOME — OBRA SELECCIONADA
+   ============================================ */
+.obra-home {
+  background: var(--bg-gallery);
+  padding: var(--space-xl) 0;
+}
+
+.obra-home__title {
+  text-align: center;
+  color: var(--color-magenta-text);
+  margin-bottom: var(--space-lg);
+}
+
+.obra-home__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--margin-page);
+}
+
+.obra-card {
+  text-align: center;
+}
+
+.obra-card__img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  margin-bottom: var(--space-sm);
+  object-fit: cover;
+  object-position: center;
+}
+
+.obra-card__title {
+  color: var(--color-magenta-text);
+  font-family: var(--font-heading);
+  font-weight: 300;
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+.obra-card__meta {
+  color: var(--color-gris);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-sm);
+}
+
+.obra-card__link {
+  color: var(--color-dorado);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease;
+  display: inline-block;
+}
+
+.obra-card__link:hover {
+  border-bottom-color: var(--color-dorado);
+}
+
+/* ============================================
+   HOME — QR / EXPOSICIÓN
+   ============================================ */
+.expo-banner {
+  background: var(--bg-magenta);
+  padding: var(--space-xl) 0;
+  text-align: center;
+}
+
+.expo-banner__title {
+  color: var(--color-dorado-claro);
+  margin-bottom: var(--space-xs);
+}
+
+.expo-banner__date {
+  color: rgba(168, 128, 96, 0.7);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+.expo-banner__qr {
+  width: 140px;
+  height: 140px;
+  background: var(--color-blanco);
+  margin: 0 auto var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.expo-banner__qr canvas {
+  display: block;
+}
+
+/* ============================================
+   HOME — CONTACTO
+   ============================================ */
+.contacto-home {
+  background: var(--bg-magenta);
+  padding: var(--space-lg) 0;
+  text-align: center;
+}
+
+.contacto-home__title {
+  color: var(--color-dorado-claro);
+  margin-bottom: var(--space-md);
+}
+
+.contacto-home__list {
+  list-style: none;
+  color: var(--color-dorado-claro);
+}
+
+.contacto-home__list li {
+  margin-bottom: var(--space-xs);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+}
+
+.contacto-home__list a {
+  color: var(--color-dorado-claro);
+  transition: opacity 0.3s ease;
+}
+
+.contacto-home__list a:hover {
+  opacity: 0.7;
+}
+
+.contacto-home__label {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+/* ============================================
+   EXPOSICIÓN — LÁMINAS
+   ============================================ */
+
+/* Portada */
+.lamina-portada {
+  background: var(--bg-gallery);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-lg) var(--margin-page);
+  position: relative;
+  overflow: hidden;
+}
+
+.lamina-portada__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.15;
+}
+
+.lamina-portada__content {
+  position: relative;
+  z-index: 1;
+}
+
+.lamina-portada__pre {
+  color: var(--color-gris);
+  font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.lamina-portada__title {
+  color: var(--color-dorado);
+  font-size: clamp(3rem, 8vw, 7rem);
+  letter-spacing: 0.15em;
+  font-weight: 200;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: var(--space-md);
+}
+
+.lamina-portada__artist {
+  margin-top: var(--space-sm);
+}
+
+.portada__logo {
+  width: clamp(200px, 40vw, 400px);
+  height: auto;
+  opacity: 0.7;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-gris);
+  opacity: 0.5;
+  animation: scrollBounce 2s ease-in-out infinite;
+  z-index: 2;
+}
+
+.scroll-indicator__text {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.scroll-indicator__arrow {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+/* Statement Curatorial */
+.lamina-statement {
+  background: var(--bg-gallery);
+  padding: var(--space-xl) 0;
+}
+
+.lamina-statement__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--margin-page);
+  align-items: start;
+}
+
+.lamina-statement__img {
+  width: 100%;
+  aspect-ratio: 3/4;
+}
+
+.lamina-statement__text {
+  color: var(--color-magenta-text);
+}
+
+.lamina-statement__text p {
+  margin-bottom: var(--space-sm);
+}
+
+/* Lámina genérica: texto */
+.lamina-texto {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--margin-page);
+}
+
+.lamina-texto__inner {
+  max-width: 780px;
+  width: 100%;
+}
+
+.lamina-texto__title {
+  margin-bottom: var(--space-md);
+}
+
+.lamina-texto__body {
+  font-weight: 300;
+}
+
+.lamina-texto__body p {
+  margin-bottom: var(--space-sm);
+}
+
+/* Fondos específicos por obra */
+.lamina--gallery { background: var(--bg-gallery); }
+.lamina--lavanda { background: var(--bg-lavanda); }
+.lamina--vino { background: var(--bg-vino); }
+.lamina--magenta { background: var(--bg-magenta); }
+
+/* Colores de texto según fondo */
+.lamina--gallery .lamina-texto__title { color: var(--color-magenta-text); }
+.lamina--gallery .lamina-texto__body { color: var(--color-magenta-alt); }
+
+.lamina--lavanda .lamina-texto__title { color: var(--color-lavanda-title); }
+.lamina--lavanda .lamina-texto__body { color: var(--color-magenta-alt); }
+
+.lamina--vino .lamina-texto__title { color: var(--color-malva); }
+.lamina--vino .lamina-texto__body { color: rgba(200, 170, 180, 0.85); }
+
+.lamina--magenta .lamina-texto__title { color: var(--color-dorado-claro); }
+.lamina--magenta .lamina-texto__body { color: var(--color-dorado-claro); }
+
+/* Naranja para "...y la vida sigue" */
+.lamina--naranja .lamina-texto__title { color: var(--color-naranja); }
+.lamina--naranja .lamina-texto__body { color: var(--color-magenta-alt); }
+
+/* Lámina genérica: imagen */
+.lamina-imagen {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--margin-page);
+}
+
+.lamina-imagen__inner {
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+}
+
+.lamina-imagen__fig {
+  margin-bottom: var(--space-md);
+}
+
+.lamina-imagen__fig img,
+.lamina-imagen__fig .placeholder-img {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.lamina-imagen__caption {
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: var(--color-gris);
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.lamina--vino .lamina-imagen__caption,
+.lamina--magenta .lamina-imagen__caption {
+  color: rgba(200, 170, 180, 0.7);
+}
+
+/* Lámina con múltiples imágenes (3 vistas) */
+.lamina-multi {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--margin-page);
+}
+
+.lamina-multi__inner {
+  max-width: var(--max-width);
+  width: 100%;
+}
+
+.lamina-multi__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+.lamina-multi__img {
+  width: 100%;
+  aspect-ratio: 1/1;
+}
+
+.lamina-multi__caption {
+  text-align: center;
+  margin-top: var(--space-md);
+  font-size: 0.8rem;
+  color: var(--color-gris);
+}
+
+/* Grid for 5 images (vida sigue) */
+.lamina-multi__grid--vida {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.lamina-multi__grid--vida .lamina-multi__img:last-child {
+  grid-column: 1 / -1;
+  max-width: 50%;
+  justify-self: center;
+}
+
+/* Lámina circular (Hermanas) */
+.lamina-imagen--circular .lamina-imagen__fig img,
+.lamina-imagen--circular .lamina-imagen__fig .placeholder-img {
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Semblanza en expo (dos columnas en magenta) */
+.lamina-semblanza {
+  background: var(--bg-magenta);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  padding: var(--space-xl) 0;
+}
+
+.lamina-semblanza__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--margin-page);
+}
+
+.lamina-semblanza__title {
+  color: var(--color-dorado-claro);
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-bottom: var(--space-sm);
+}
+
+.lamina-semblanza__col {
+  color: var(--color-dorado-claro);
+  font-weight: 300;
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+.lamina-semblanza__col p {
+  margin-bottom: var(--space-sm);
+}
+
+/* Contacto en expo */
+.lamina-contacto {
+  background: var(--bg-magenta);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  padding: var(--space-xl) 0;
+}
+
+.lamina-contacto__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--margin-page);
+  align-items: center;
+}
+
+.lamina-contacto__portrait {
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 3/4;
+  margin: 0 auto;
+}
+
+.lamina-contacto__info {
+  text-align: center;
+  color: var(--color-dorado-claro);
+}
+
+.lamina-contacto__info h3 {
+  font-family: var(--font-heading);
+  font-weight: 300;
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+.lamina-contacto__info ul {
+  list-style: none;
+}
+
+.lamina-contacto__info li {
+  margin-bottom: var(--space-xs);
+  font-size: 0.9rem;
+}
+
+/* ---------- NAV EXPO ---------- */
+.expo-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(221, 218, 209, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 0.8rem var(--margin-page);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.expo-nav.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.expo-nav__brand {
+  display: flex;
+  align-items: center;
+}
+
+.expo-nav__home {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gris);
+  transition: color 0.3s ease;
+}
+
+.expo-nav__home:hover {
+  color: var(--color-magenta-text);
+}
+
+/* ---------- HOME NAV ---------- */
+.home-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(221, 218, 209, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 0.8rem var(--margin-page);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.home-nav.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home-nav__brand {
+  display: flex;
+  align-items: center;
+}
+
+.nav-logo {
+  height: 22px;
+  width: auto;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.nav-logo:hover {
+  opacity: 1;
+}
+
+.home-nav__link {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gris);
+  transition: color 0.3s ease;
+}
+
+.home-nav__link:hover {
+  color: var(--color-magenta-text);
+}
+
+/* ---------- BACK TO TOP ---------- */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 40px;
+  height: 40px;
+  background: rgba(143, 49, 98, 0.8);
+  color: var(--color-blanco);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 90;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  background: var(--color-magenta-text);
+}
+
+/* ---------- EXPO DOWNLOAD ---------- */
+.expo-download {
+  background: var(--bg-magenta);
+  padding: var(--space-lg) 0;
+  text-align: center;
+}
+
+/* ---------- FOOTER ---------- */
+.site-footer {
+  background: var(--color-negro);
+  padding: var(--space-md) 0;
+  text-align: center;
+}
+
+.site-footer p {
+  color: rgba(245, 244, 240, 0.4);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+}
+
+/* ============================================
+   RESPONSIVE — TABLET+
+   ============================================ */
+@media (min-width: 768px) {
+  .hero__inner {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+  }
+
+  .hero__content {
+    text-align: left;
+  }
+
+  .hero__statement {
+    margin-left: 0;
+  }
+
+  .hero__actions {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .hero__portrait {
+    margin: 0;
+  }
+
+  .obra-home__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lamina-statement__inner {
+    grid-template-columns: 1fr 1.2fr;
+  }
+
+  .lamina-multi__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+  }
+
+  .lamina-semblanza__inner {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .lamina-contacto__inner {
+    grid-template-columns: auto 1fr;
+  }
+
+  .lamina-contacto__info {
+    text-align: left;
+  }
+}
+
+@media (min-width: 1024px) {
+  .obra-home__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---------- PRINT ---------- */
+@media print {
+  .expo-nav, .home-nav, .back-to-top, .expo-banner {
+    display: none !important;
+  }
+
+  .section, .lamina-texto, .lamina-imagen, .lamina-multi {
+    min-height: auto;
+    page-break-after: always;
+  }
+}

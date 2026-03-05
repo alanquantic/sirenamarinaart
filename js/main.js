@@ -178,6 +178,47 @@
     onScroll();
   }
 
+  // ---- LIGHTBOX ----
+  function initLightbox() {
+    var images = document.querySelectorAll('.lightbox-trigger');
+    if (!images.length) return;
+
+    // Create lightbox overlay
+    var overlay = document.createElement('div');
+    overlay.className = 'lightbox';
+    overlay.innerHTML = '<div class="lightbox__backdrop"></div><div class="lightbox__wrap"><img class="lightbox__img" src="" alt=""><button class="lightbox__close" aria-label="Cerrar">&times;</button></div>';
+    document.body.appendChild(overlay);
+
+    var lightboxImg = overlay.querySelector('.lightbox__img');
+    var closeBtn = overlay.querySelector('.lightbox__close');
+    var backdrop = overlay.querySelector('.lightbox__backdrop');
+
+    function openLightbox(src, alt) {
+      lightboxImg.src = src;
+      lightboxImg.alt = alt || '';
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    images.forEach(function (img) {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', function () {
+        openLightbox(this.src, this.alt);
+      });
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    backdrop.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  }
+
   // ---- SMOOTH ANCHOR SCROLL ----
   function initSmoothAnchors() {
     document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
@@ -202,6 +243,7 @@
     initQR();
     initLazyLoad();
     initFirmaDraw();
+    initLightbox();
     initSmoothAnchors();
   }
 

@@ -178,6 +178,13 @@
     onScroll();
   }
 
+  // ---- ANALYTICS HELPER ----
+  function trackEvent(eventName, params) {
+    if (typeof gtag === 'function') {
+      gtag('event', eventName, params);
+    }
+  }
+
   // ---- LIGHTBOX ----
   function initLightbox() {
     var images = document.querySelectorAll('.lightbox-trigger');
@@ -192,23 +199,54 @@
     var lightboxImg = overlay.querySelector('.lightbox__img');
     var closeBtn = overlay.querySelector('.lightbox__close');
     var backdrop = overlay.querySelector('.lightbox__backdrop');
+    var lightboxOpenTime = 0;
+    var currentImageName = '';
 
-    function openLightbox(src, alt) {
+    function getArtworkName(img) {
+      // Try to find artwork name from closest section heading or alt text
+      var section = img.closest('.lamina-multi, .lamina-imagen, .lamina-statement');
+      if (section) {
+        var prev = section.previousElementSibling;
+        if (prev) {
+          var title = prev.querySelector('.lamina-texto__title');
+          if (title) return title.textContent.trim().replace(/\s+/g, ' ');
+        }
+      }
+      return img.alt || img.src.split('/').pop();
+    }
+
+    function openLightbox(src, alt, artworkName) {
       lightboxImg.src = src;
       lightboxImg.alt = alt || '';
       overlay.classList.add('active');
       document.body.style.overflow = 'hidden';
+      lightboxOpenTime = Date.now();
+      currentImageName = artworkName;
+
+      trackEvent('lightbox_open', {
+        image_name: artworkName,
+        image_src: src.split('/').pop()
+      });
     }
 
     function closeLightbox() {
+      if (overlay.classList.contains('active') && lightboxOpenTime) {
+        var viewDuration = Math.round((Date.now() - lightboxOpenTime) / 1000);
+        trackEvent('lightbox_close', {
+          image_name: currentImageName,
+          view_duration_seconds: viewDuration
+        });
+      }
       overlay.classList.remove('active');
       document.body.style.overflow = '';
+      lightboxOpenTime = 0;
     }
 
     images.forEach(function (img) {
       img.style.cursor = 'zoom-in';
       img.addEventListener('click', function () {
-        openLightbox(this.src, this.alt);
+        var name = getArtworkName(this);
+        openLightbox(this.src, this.alt, name);
       });
     });
 
@@ -217,6 +255,88 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeLightbox();
     });
+  }
+
+  // ---- ARTWORK VIEW TIME TRACKING ----
+  function initArtworkTracking() {
+    // Track time spent viewing each artwork section
+    var sections = document.querySelectorAll('[id]');
+    if (!sections.length) return;
+
+    var sectionTimers = {};
+    var sectionReported = {};
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var id = entry.target.id;
+        if (!id) return;
+
+        if (entry.isIntersecting) {
+          // Start timing
+          sectionTimers[id] = Date.now();
+        } else if (sectionTimers[id]) {
+          // Stop timing and report
+          var elapsed = Math.round((Date.now() - sectionTimers[id]) / 1000);
+          delete sectionTimers[id];
+
+          // Only report meaningful views (>2 seconds)
+          if (elapsed > 2 && !sectionReported[id + '_' + elapsed]) {
+            trackEvent('artwork_view', {
+              section_id: id,
+              section_name: getSectionName(entry.target),
+              view_duration_seconds: elapsed
+            });
+          }
+        }
+      });
+    }, { threshold: 0.3 });
+
+    sections.forEach(function (section) {
+      observer.observe(section);
+    });
+
+    function getSectionName(el) {
+      var heading = el.querySelector('.lamina-texto__title, .heading-lg, .heading-md, h2, h3');
+      if (heading) return heading.textContent.trim().replace(/\s+/g, ' ');
+      return el.id;
+    }
+
+    // Report remaining timers on page unload
+    window.addEventListener('beforeunload', function () {
+      Object.keys(sectionTimers).forEach(function (id) {
+        var elapsed = Math.round((Date.now() - sectionTimers[id]) / 1000);
+        if (elapsed > 2) {
+          trackEvent('artwork_view', {
+            section_id: id,
+            section_name: id,
+            view_duration_seconds: elapsed
+          });
+        }
+      });
+    });
+  }
+
+  // ---- SCROLL DEPTH TRACKING ----
+  function initScrollDepth() {
+    var milestones = [25, 50, 75, 90, 100];
+    var reported = {};
+
+    window.addEventListener('scroll', function () {
+      var scrollTop = window.pageYOffset;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) return;
+      var percent = Math.round((scrollTop / docHeight) * 100);
+
+      milestones.forEach(function (m) {
+        if (percent >= m && !reported[m]) {
+          reported[m] = true;
+          trackEvent('scroll_depth', {
+            percent: m,
+            page: window.location.pathname
+          });
+        }
+      });
+    }, { passive: true });
   }
 
   // ---- SMOOTH ANCHOR SCROLL ----
@@ -244,6 +364,8 @@
     initLazyLoad();
     initFirmaDraw();
     initLightbox();
+    initArtworkTracking();
+    initScrollDepth();
     initSmoothAnchors();
   }
 

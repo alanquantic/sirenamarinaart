@@ -321,6 +321,24 @@
           El valor de la obra no reside en el objeto material, sino en la acción que provoca: el encuentro entre personas, la escucha mutua y la red de apoyo que se forma durante la sesión. La obra existe cada vez que las personas se reúnen, comparten su experiencia y construyen entre todas una red de apoyo.
         </p>
       </div>
+      <div class="instrucciones-actions fade-in">
+        <a href="../Instrucciones_para_tejer_nos_Manual.pdf" download class="btn btn--primary">Descargar instructivo (PDF)</a>
+        <div class="audio-control">
+          <button class="btn btn--ghost" id="btnAudioTejer" aria-label="Reproducir audio">
+            <span class="audio-control__icon" id="audioIcon">&#9654;</span> Escuchar audio
+          </button>
+          <a href="../sirenamarinaart_entretejer(nos).MP3" download class="btn btn--ghost">Descargar audio</a>
+        </div>
+        <div class="audio-player" id="audioPlayerWrap" style="display:none;">
+          <audio id="audioTejer" preload="metadata">
+            <source src="../sirenamarinaart_entretejer(nos).MP3" type="audio/mpeg">
+          </audio>
+          <div class="audio-player__bar">
+            <input type="range" class="audio-player__progress" id="audioProgress" value="0" min="0" max="100" step="0.1">
+            <span class="audio-player__time" id="audioTime">0:00 / 0:00</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -479,5 +497,50 @@
   <button class="back-to-top" id="backToTop" aria-label="Volver arriba">&uarr;</button>
 
   <script src="../js/main.js"></script>
+  <script>
+  (function(){
+    var btn = document.getElementById('btnAudioTejer');
+    var audio = document.getElementById('audioTejer');
+    var wrap = document.getElementById('audioPlayerWrap');
+    var icon = document.getElementById('audioIcon');
+    var progress = document.getElementById('audioProgress');
+    var timeEl = document.getElementById('audioTime');
+    if(!btn||!audio) return;
+
+    function fmt(s){
+      var m=Math.floor(s/60), sec=Math.floor(s%60);
+      return m+':'+(sec<10?'0':'')+sec;
+    }
+
+    btn.addEventListener('click',function(){
+      wrap.style.display='block';
+      if(audio.paused){
+        audio.play();
+        icon.innerHTML='&#10074;&#10074;';
+        btn.querySelector('.audio-control__icon').nextSibling.textContent=' Pausar audio';
+      } else {
+        audio.pause();
+        icon.innerHTML='&#9654;';
+        btn.querySelector('.audio-control__icon').nextSibling.textContent=' Escuchar audio';
+      }
+    });
+
+    audio.addEventListener('timeupdate',function(){
+      if(audio.duration){
+        progress.value=(audio.currentTime/audio.duration)*100;
+        timeEl.textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration);
+      }
+    });
+
+    audio.addEventListener('ended',function(){
+      icon.innerHTML='&#9654;';
+      btn.querySelector('.audio-control__icon').nextSibling.textContent=' Escuchar audio';
+    });
+
+    progress.addEventListener('input',function(){
+      if(audio.duration) audio.currentTime=(this.value/100)*audio.duration;
+    });
+  })();
+  </script>
 </body>
 </html>

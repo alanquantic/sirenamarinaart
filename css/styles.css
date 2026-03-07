@@ -1096,6 +1096,73 @@ a {
   background: var(--color-magenta-text);
 }
 
+/* ---------- INSTRUCCIONES ACTIONS ---------- */
+.instrucciones-actions {
+  margin-top: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: flex-start;
+}
+
+.audio-control {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.audio-control__icon {
+  font-size: 0.7em;
+  margin-right: 0.3em;
+}
+
+.audio-player {
+  width: 100%;
+  max-width: 480px;
+}
+
+.audio-player__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.audio-player__progress {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 3px;
+  background: rgba(143, 49, 98, 0.2);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.audio-player__progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-magenta-text);
+  cursor: pointer;
+}
+
+.audio-player__progress::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-magenta-text);
+  border: none;
+  cursor: pointer;
+}
+
+.audio-player__time {
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--color-gris);
+  white-space: nowrap;
+}
+
 /* ---------- EXPO DOWNLOAD ---------- */
 .expo-download {
   background: var(--bg-magenta);
